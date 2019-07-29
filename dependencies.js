@@ -1,43 +1,41 @@
-const path = require('path');
-const os = require('os');
 const cacache = require('cacache/en');
 const got = require('got');
 const Package = require('nice-package');
-
-const cachePath = path.join(os.tmpdir(), 'node-vip');
+const config = require('./config');
 
 const dependencies = async(name) => {
-    let data = null, metadata = {};
-    //TODO 2 queries
-    let obj = await cacache.get.info(cachePath, name);
+    let deps = [];
+    let obj;
+
+    try {
+        obj = await cacache.get(config.storagePath, name);
+    }
+    catch(e) {
+        //No-op
+    }
     if(obj) {
-        obj = await cacache.get(cachePath, name);
-        data = obj.data;
-        metadata = obj.metadata;
+        return JSON.parse(obj.data || '[]');
     }
-    if(data) {
-        return Promise.resolve(JSON.parse(data));
-    }
-    else {
-        let dependencies = [];
 
-        const doc = await got(`https://replicate.npmjs.com/${encodeURIComponent(name)}`, {json: true}).catch(err => {
-            //Missing, just ignore
-            return Promise.resolve({});
-        });
-        const pkg = new Package(doc.body);
-        if(pkg.valid) {
-            dependencies = pkg.depNames; //pkg.allDepNames;
-        }
-
-        await cacache.put(
-            cachePath, 
-            name, 
-            JSON.stringify(dependencies),
-            {metadata: {scored: true, score: 0.0, impact: 0}}
-        );
-        return Promise.resolve(dependencies);
+    //Load the dependencies directly
+    const doc = await got(`${config.database}/${encodeURIComponent(name)}`, {json: true}).catch(err => {
+        //Missing, just ignore
+        return {};
+    });
+    const pkg = new Package(doc.body);
+    if(pkg.valid) {
+        deps = config.allDependencies ? pkg.allDepNames : pkg.depNames;
     }
+
+    //Store the depedencies
+    await cacache.put(
+        config.storagePath, 
+        name, 
+        JSON.stringify(deps),
+        {metadata: {score: 0.0, impact: 0}}
+    );
+
+    return deps;
 };
 
 module.exports = dependencies;

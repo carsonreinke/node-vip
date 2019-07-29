@@ -1,6 +1,6 @@
 {
   "name": "vip",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "cacache": "^11.3.3",
+    "changes-stream": "^2.2.0",
+    "commander": "^2.20.0",
     "dot-object": "^1.7.1",
     "got": "^9.6.0",
     "jsonfile": "^5.0.0",

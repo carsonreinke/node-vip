@@ -1,41 +1,32 @@
-const path = require('path');
-const os = require('os');
 const cacache = require('cacache/en');
 const scoreDependencies = require('./score-dependencies');
-
-const storagePath = path.join(os.tmpdir(), 'node-vip');
+const config = require('./config');
 
 const scores = async(pkg, dependencies) => {
     const scorePkgs = await scoreDependencies([pkg], dependencies);
-        
-    for(let scorePkg in scorePkgs) {
-        //TODO 2 queries
-        let obj = await cacache.get.info(storagePath, scorePkg);
-        if(obj) {
-            obj = await cacache.get(storagePath, scorePkg);
-            if(!obj.metadata) {
-                obj.metadata = {};
-            }
-            if(!obj.metadata.score) {
-                obj.metadata.score = 0.0;
-            }
-            if(!obj.metadata.impact) {
-                obj.metadata.impact = 0;
-            }
-            
-            obj.metadata.score += scorePkgs[scorePkg];
-            obj.metadata.impact++;
+    let obj;
 
-            await cacache.put(
-                storagePath, 
-                scorePkg, 
-                obj.data, 
-                {metadata: obj.metadata}
-            );
+    for(let scorePkg in scorePkgs) {
+        obj = await cacache.get(config.storagePath, scorePkg);
+        if(!obj.metadata) {
+            obj.metadata = {};
         }
-        else {
-            throw new Error(`Package is missing in storage ${scorePkg}`)
+        if(!obj.metadata.score) {
+            obj.metadata.score = 0.0;
         }
+        if(!obj.metadata.impact) {
+            obj.metadata.impact = 0;
+        }
+        
+        obj.metadata.score += scorePkgs[scorePkg];
+        obj.metadata.impact++;
+
+        await cacache.put(
+            config.storagePath, 
+            scorePkg, 
+            obj.data, 
+            {metadata: obj.metadata}
+        );
     }
 
     return scorePkgs;
