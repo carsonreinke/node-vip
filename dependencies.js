@@ -1,20 +1,14 @@
-const cacache = require('cacache/en');
+const storage = require('./storage');
 const got = require('got');
 const Package = require('nice-package');
 const config = require('./config');
 
 const dependencies = async(name) => {
     let deps = [];
-    let obj;
 
-    try {
-        obj = await cacache.get(config.storagePath, name);
-    }
-    catch(e) {
-        //No-op
-    }
+    const obj = await storage.get(name);
     if(obj) {
-        return JSON.parse(obj.data || '[]');
+        return obj.data;
     }
 
     //Load the dependencies directly
@@ -28,12 +22,7 @@ const dependencies = async(name) => {
     }
 
     //Store the depedencies
-    await cacache.put(
-        config.storagePath, 
-        name, 
-        JSON.stringify(deps),
-        {metadata: {score: 0.0, impact: 0}}
-    );
+    await storage.put(name, deps, {score: 0.0, impact: 0});
 
     return deps;
 };

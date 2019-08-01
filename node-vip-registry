@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+const steps = require('./steps');
+
+require('./command');
+
+(async() => {
+    console.debug('Clearing storage');
+    try {
+        await steps.clear();
+    }
+    catch(e) {
+        console.error(e);
+    }
+
+    //Process the entire registry
+    console.debug('Processing registry');
+    try {
+        await steps.loadRegistry();
+    }
+    catch(e) {
+        console.error(e);
+    }
+
+    console.debug('Complete');
+})();

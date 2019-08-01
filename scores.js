@@ -1,4 +1,4 @@
-const cacache = require('cacache/en');
+const storage = require('./storage');
 const scoreDependencies = require('./score-dependencies');
 const config = require('./config');
 
@@ -7,7 +7,7 @@ const scores = async(pkg, dependencies) => {
     let obj;
 
     for(let scorePkg in scorePkgs) {
-        obj = await cacache.get(config.storagePath, scorePkg);
+        obj = await storage.get(scorePkg);
         if(!obj.metadata) {
             obj.metadata = {};
         }
@@ -21,12 +21,7 @@ const scores = async(pkg, dependencies) => {
         obj.metadata.score += scorePkgs[scorePkg];
         obj.metadata.impact++;
 
-        await cacache.put(
-            config.storagePath, 
-            scorePkg, 
-            obj.data, 
-            {metadata: obj.metadata}
-        );
+        await storage.put(scorePkg, obj.data, obj.metadata);
     }
 
     return scorePkgs;
