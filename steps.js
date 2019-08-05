@@ -28,7 +28,7 @@ const loadRegistry = async() => {
         const request = got(config.database, {json: true});
         request.then(response => {
             finalUpdate = response.body.update_seq
-            const bar = new ProgressBar('[:bar] (:etas) :current/:total -> :package', {total: finalUpdate, width: 20});
+            const bar = new ProgressBar('[:bar] (:etas) :current/:total -> :package', {total: response.body.doc_count, width: 20});
 
             changes.on('data', async(change) => {
                 var pkg = new Package(change.doc);
