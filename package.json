@@ -15,7 +15,8 @@
     "got": "^9.6.0",
     "jsonfile": "^5.0.0",
     "node-persist": "^3.0.5",
-    "package-stream": "^3.1.0"
+    "package-stream": "^3.1.0",
+    "progress": "^2.0.3"
   },
   "bin": "./node-vip"
 }

@@ -12,6 +12,11 @@ const scoreDependencies = async(path, pkgs) => {
             continue;
         }
 
+        //Ignore some special packages used for dependency testing
+        if(pkg.match(/^strongcanary/) || pkg.match(/^npm-cycle/) || pkg.match(/^npm-circdep-test/)) {
+            continue;
+        }
+
         //Update score
         if(!scores[pkg]) {
             scores[pkg] = 0.0;
