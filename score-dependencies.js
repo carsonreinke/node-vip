@@ -47,7 +47,7 @@ const scoreDependencies = async(path, pkgs) => {
     const scores = {};
     const depth = 2.0 ** -(path.length - 1);
 
-    console.debug(`Scoring dependencies from ${path.join(' > ')}`);
+    //console.debug(`Scoring dependencies from ${path.join(' > ')}`);
 
     for(let pkg of pkgs) {
         //Check for circular dependencies
