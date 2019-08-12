@@ -6,6 +6,11 @@ const config = require('./config');
 const dependencies = async(name) => {
     let deps = [];
 
+    //Missing package name
+    if(!name) {
+        return [];
+    }
+
     const obj = await storage.get(name);
     if(obj) {
         return obj.data;

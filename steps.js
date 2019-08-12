@@ -39,7 +39,11 @@ const loadRegistry = async() => {
 
                 //console.debug(`Loaded dependencies for ${pkg.name}`);
                 const dependencies = config.allDependencies ? pkg.allDepNames : pkg.depNames;
-                await storage.put(pkg.name, dependencies, {score: 0.0, impact: 0});
+
+                //Only store if we have a name
+                if(pkg.name) {
+                    await storage.put(pkg.name, dependencies, {score: 0.0, impact: 0});
+                }
 
                 bar.tick({'package': pkg.name});
 

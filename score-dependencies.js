@@ -50,6 +50,11 @@ const scoreDependencies = async(path, pkgs) => {
     //console.debug(`Scoring dependencies from ${path.join(' > ')}`);
 
     for(let pkg of pkgs) {
+        //Missing package name
+        if(!pkg) {
+            continue;
+        }
+
         //Check for circular dependencies
         if(path.includes(pkg)) {
             continue;
