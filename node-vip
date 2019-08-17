@@ -1,9 +1,0 @@
-#!/usr/bin/env node
-
-const program = require('commander');
-
-program
-    .command('registry', 'Process Node registry and persist locally')
-    .command('scores', 'Process scores from registry')
-    .command('report', 'Generate JSON report')
-    .parse(process.argv);
