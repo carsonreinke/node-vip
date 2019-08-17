@@ -8,11 +8,11 @@ require('./command');
     try {
         //Report on all the scores
         console.debug('Producing report');
-        const scores = await steps.buildReport();
+        const report = await steps.buildReport();
 
         //Write report to file
         console.debug(`Writing report to ${config.reportPath}`);
-        await steps.writeReport(scores);
+        await steps.writeReport(report);
     }
     catch(e) {
         console.error(e);

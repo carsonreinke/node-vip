@@ -84,7 +84,12 @@ const buildReport = async() => {
 
     const pkgs = await storage.keys();
     const bar = new ProgressBar('[:bar] (:etas) :current/:total -> :package', {total: pkgs.size, width: 20});
-    const reportEntries = [];
+    const entries = [];
+    const report = {
+        entries,
+        total: {score: 0.0, impact: 0},
+        others: {score: 0.0, impact: 0}
+    };
 
     for(let pkg of pkgs) {
         bar.tick({'package': pkg});
@@ -93,7 +98,7 @@ const buildReport = async() => {
 
         const obj = await storage.get(pkg);
         if(obj.metadata && obj.metadata.score && obj.metadata.score > 0.0) {
-            reportEntries.push(
+            entries.push(
                 new ReportEntry(
                     pkg, 
                     obj.metadata.score, 
@@ -104,11 +109,31 @@ const buildReport = async() => {
     }
     console.log('\n');
 
-    return reportEntries.sort((a, b) => b.score - a.score);
+    //Sort by score
+    entries.sort((a, b) => b.score - a.score)
+
+    //Calculate some totals
+    report.total = entries.reduce((accumulator, currentValue) => {
+        accumulator.score += currentValue.score;
+        accumulator.impact += currentValue.impact;
+        return accumulator;
+    }, report.total);
+    report.others = entries.reduceRight((accumulator, currentValue, index) => {
+        if(index >= config.reportSize) {
+            accumulator.score += currentValue.score;
+            accumulator.impact += currentValue.impact;
+        }
+        return accumulator;
+    }, report.others);
+
+    //Reduce report size
+    report.entries = entries.slice(0, config.reportSize);
+
+    return report;
 };
 
-const writeReport = async(scores) => {
-    await jsonfile.writeFile(config.reportPath, scores);
+const writeReport = async(report) => {
+    await jsonfile.writeFile(config.reportPath, report);
 };
 
 module.exports = {
