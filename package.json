@@ -1,0 +1,30 @@
+{
+  "name": "node-vip-gh-pages",
+  "version": "0.0.0",
+  "description": "GitHub pages for node-vip",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carsonreinke/node-vip.git"
+  },
+  "author": "Carson Reinke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carsonreinke/node-vip/issues"
+  },
+  "homepage": "https://github.com/carsonreinke/node-vip#readme",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
+  },
+  "dependencies": {
+    "google-charts": "^2.0.0"
+  }
+}
