@@ -6,11 +6,11 @@ class ReportEntry {
     }
 
     toJSON() {
-        return JSON.stringify({
+        return {
             name: this.name,
             score: this.score,
             impact: this.impact
-        });
+        };
     }
 }
 
