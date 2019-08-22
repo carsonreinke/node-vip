@@ -37,7 +37,7 @@
                         The approach is just brute force recursion of the dependency tree (not development dependencies).
                         The score is simple exponential decay starting with <code>1</code> for a direct dependency and <code>0.5</code> for a sub-dependency and so on.
                         A simple circular dependency check as added.
-                        Additional a count of how many packages were impacted was tracked which is simply a count of how many times a package was within a dependency tree.
+                        Additionally a count of how many packages were impacted was tracked which is simply a count of how many times a package was within a dependency tree.
                         It took around 3-4 days to run through.
                     </p>
                 </section>
@@ -71,6 +71,15 @@
                         <dt>Impact</dt>
                         <dd>Count of packages that are impacted by this package.</dd>
                     </dl>
+                </section>
+
+                <section>
+                    <h2>Notes</h2>
+                    <p>
+                        I discovered a few odities in 1+ million packages.  Like this hillarious package <a href="https://www.npmjs.com/package/ifyouwanttogetthesumoftwonumberswherethosetwonumbersarechosenbyfindingthelargestoftwooutofthreenumbersandsquaringthemwhichismultiplyingthembyitselfthenyoushouldinputthreenumbersintothisfunctionanditwilldothatforyou" title="ifyouwanttogetthesumoftwonumberswherethosetwonumbersarechosenbyfindingthelargestoftwooutofthreenumbersandsquaringthemwhichismultiplyingthembyitselfthenyoushouldinputthreenumbersintothisfunctionanditwilldothatforyou">ifyouwanttogetthesumoftwonumberswherethosetwonumbers...</a>.
+                        Or there is a number of <a href="https://github.com/carsonreinke/node-vip/blob/master/score-dependencies.js#L64">circular dependency testing packages</a> which I simply ignored because they just took forever.
+                        And then there was some very strange set of packages from <a href="https://www.npmjs.com/~lecomte">"lecomtegs"</a>, they all sound very cryptic and probably meant to be abusive, I simply ignored them.
+                    </p>
                 </section>
             </main>
         </div>
