@@ -36,24 +36,41 @@
                     <p>
                         The approach is just brute force recursion of the dependency tree (not development dependencies).
                         The score is simple exponential decay starting with <code>1</code> for a direct dependency and <code>0.5</code> for a sub-dependency and so on.
+                        A simple circular dependency check as added.
+                        Additional a count of how many packages were impacted was tracked which is simply a count of how many times a package was within a dependency tree.
                         It took around 3-4 days to run through.
                     </p>
                 </section>
-
                 <section>
                     <h2>Data (August 2019)</h2>
                     <figure>
-                        <figcaption>Top 100 important Node packages</figcaption>
+                        <figcaption>Top 100 Node packages</figcaption>
                         <div id="table"></div>
                     </figure>
+                    <dl>
+                        <dt>Score</dt>
+                        <dd>Total number based on depth within a dependency tree.</dd>
+
+                        <dt>Impact</dt>
+                        <dd>Count of packages that are impacted by this package.</dd>
+                    </dl>
+
+                    <p>Full data set is available <a href="./all.json">here</a>.</p>
                 </section>
 
                 <section>
                     <h2>Chart (August 2019)</h2>
                     <figure>
-                        <figcaption>Scatter chart of Node package scores</figcaption>
+                        <figcaption>Top 100 Node packages (Score versus Impact)</figcaption>
                         <div id="chart"></div>
                     </figure>
+                    <dl>
+                        <dt>Score</dt>
+                        <dd>Total number based on depth within a dependency tree.</dd>
+
+                        <dt>Impact</dt>
+                        <dd>Count of packages that are impacted by this package.</dd>
+                    </dl>
                 </section>
             </main>
         </div>
