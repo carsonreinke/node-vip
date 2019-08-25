@@ -44,11 +44,11 @@ const drawTable = () => {
     data.addColumn('number', 'Score');
     data.addColumn('number', 'Impact');
     report.entries.forEach(entry => {
-        data.addRow([entry.name, Math.round(entry.score), entry.impact]);
+        data.addRow([`<a href="https://www.npmjs.com/package/${encodeURIComponent(entry.name)}" target="_blank">${entry.name}</a>`, Math.round(entry.score), entry.impact]);
     });
 
     const chart = new GoogleCharts.api.visualization.Table(document.getElementById('table'));
-    chart.draw(data);
+    chart.draw(data, {allowHtml: true});
 };
 
 GoogleCharts.load(() => {
